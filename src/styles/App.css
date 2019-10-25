@@ -1,0 +1,8 @@
+.container-slim {
+  max-width: 480px;
+  margin: auto;
+}
+
+.btn-submit {
+  margin-bottom: 1em;
+}
