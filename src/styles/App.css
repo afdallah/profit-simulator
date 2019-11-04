@@ -1,8 +1,37 @@
+body {
+  padding-top: 1.5em;
+}
+
+[disabled] {
+  color: rgba(0, 0, 0, 0.11);
+  cursor: not-allowed
+}
+
+.img-center {
+  display: block;
+  margin: auto;
+}
+
 .container-slim {
+  background: #fff!important;
   max-width: 480px;
   margin: auto;
+  padding: 0 10px;
 }
 
 .btn-submit {
   margin-bottom: 1em;
+}
+
+.ant-modal {
+  width: 1000px;
+}
+
+table {
+  width: 100%;
+}
+
+table, tr, td {
+  border: 1px solid #d4d4d4;
+  padding: 12px 15px;
 }

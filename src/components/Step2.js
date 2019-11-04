@@ -1,45 +1,91 @@
 import React from 'react'
-import product from '../images/product.png'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { updateInput } from '../actions'
 
-export default function Step2(props) {
-  if (props.currentStep !== 2) {
-    return null
-  }
+import { Form, InputNumber, Select, Icon } from 'antd'
+
+import product from '../images/product.png'
+const { Option } = Select
+
+function Step2(props) {
+  const { form } = props
+  const { getFieldDecorator } = form
+
   return (
     <>
-      <img src={product} className="mx-auto d-block" alt="Illustration" />
-      <div className="form-group">
-        <label htmlFor="price">Harga Produk</label>
-        <input
-          className="form-control"
-          id="price"
-          name="price"
-          type="number"
+      <img src={product} className="img-center" alt="Illustration" />
+      <Form.Item label="Harga Produk">
+        {getFieldDecorator('price', {
+            initialValue: props.data.price,
+            rules: [{
+              required: true,
+              message: 'Please input something'
+            }, {
+              pattern: /^[0-9]+$/,
+              message: 'Only number can be entered'
+            }]
+          })(<InputNumber
+          style={{width: '100%'}}
+          suffix={<span style={{ color: 'rgba(0,0,0,.25)' }}>IDR </span>}
+          formatter={value => `Rp ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          parser={value => value.replace(/\Rp\s?|(,*)/g, '')}
           placeholder="Masukan harga"
-          value={props.price}
-          onChange={props.handleChange}
-          />
-      </div>
-      <div className="form-group">
-        <label htmlFor="margin">Margin Produk</label>
-        <input
-          className="form-control"
-          id="margin"
+          name="price"
+          onChange={value => props.updateInput('price', value)}
+        />)}
+      </Form.Item>
+      <Form.Item label="Margin Produk">
+        {getFieldDecorator('margin', {
+            initialValue: props.data.margin,
+            rules: [{
+              required: true,
+              message: 'Please input something'
+            }, {
+              pattern: /^[0-9]+$/,
+              message: 'Only number can be entered'
+            }]
+          })(<InputNumber
+          style={{width: '100%'}}
+          suffix={<span style={{ color: 'rgba(0,0,0,.25)' }}>IDR </span>}
+          formatter={value => `${value}%`}
+          parser={value => value.replace('%', '')}
+          min={0}
+          max={100}
+          placeholder="Masukan margin"
           name="margin"
-          type="number"
-          placeholder="Masukan margin (%)"
-          value={props.margin}
-          onChange={props.handleChange}
-        />
-      </div>
-      {/* <div className="form-group">
-        <label htmlFor="category">Kategori Bisnis</label>
-        <select name="category" className="form-control" id="category" onChange={props.handleChange}>
-          <option disabled selected>Pilih</option>
-          <option>Satu</option>
-          <option>Dua</option>
-        </select>
-      </div> */}
+          onChange={value => props.updateInput('margin', value)}
+        />)}
+      </Form.Item>
+      <Form.Item label="Category Product">
+        <Select
+          showSearch
+          style={{ width: '100%' }}
+          placeholder="Select a business category"
+          optionFilterProp="children"
+          name="category"
+          // onFocus={onFocus}
+          // onBlur={onBlur}
+          // onSearch={onSearch}
+          filterOption={(input, option) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          onChange={(value) => props.updateInput('category', value)}
+        >
+          <Option value="financials">Financials</Option>
+          <Option value="ecommerce">Ecommerce</Option>
+          <Option value="others">Others</Option>
+        </Select>
+      </Form.Item>
     </>
   );
 }
+
+const mapStateToProps = state => {
+  return { data: state }
+}
+
+export default compose(
+  connect(mapStateToProps, { updateInput }),
+  Form.create()
+)(Step2)
