@@ -93,12 +93,12 @@ class Step3 extends React.Component {
 
               <tr>
                 <td>Harga Produk </td>
-                <td>{format(this.props.data.totalCs)}</td>
+                <td>{format(this.props.data.price)}</td>
               </tr>
 
               <tr>
                 <td>Margin Produk </td>
-                <td>{format(this.props.data.margin)}</td>
+                <td>{this.props.data.margin / 100 * this.props.data.price}</td>
               </tr>
 
               <tr>
